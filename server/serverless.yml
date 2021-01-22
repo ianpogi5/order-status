@@ -21,6 +21,10 @@ provider:
       Action:
         - dynamodb:*
       Resource: "*"
+    - Effect: Allow
+      Action:
+        - execute-api:*
+      Resource: "*"
 
 functions:
   websocket-connect:

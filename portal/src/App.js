@@ -7,17 +7,20 @@ const { REACT_APP_WS_ENDPOINT } = process.env;
 const App = () => {
   const [client, setClient] = useState(null);
   const [status, setStatus] = useState("disconnected");
-
-  const onMessage = (message) => {
-    console.log(message);
-  };
+  const [messages, setMessages] = useState("");
 
   const connect = () => {
     const cl = new W3CWebSocket(REACT_APP_WS_ENDPOINT);
+
     cl.onopen = () => {
       setStatus("connected");
     };
-    cl.onmessage = (message) => onMessage;
+
+    cl.onmessage = (message) => {
+      console.log(message);
+      setMessages((m) => `${m}<p>${message.data}</p>`);
+    };
+
     setClient(cl);
   };
 
@@ -48,7 +51,7 @@ const App = () => {
             Disconnect
           </button>
         </div>
-        <div className="row">
+        <div className="row mb-4">
           <h3 className="h5">
             Status:{" "}
             <span
@@ -60,6 +63,10 @@ const App = () => {
             </span>
           </h3>
         </div>
+        <div
+          className="row"
+          dangerouslySetInnerHTML={{ __html: messages }}
+        ></div>
       </main>
     </div>
   );
