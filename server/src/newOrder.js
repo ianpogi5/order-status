@@ -11,12 +11,13 @@ export const handler = async (event) => {
   const data = {
     ID: body.id,
     date: Date.now(),
-    messages: body.message,
+    status: body.status,
+    order: body.order,
   };
 
   await dynamo.write(data, tableName);
 
   return response.OK({
-    body: { message: "default" },
+    body: { message: "Saved!" },
   });
 };

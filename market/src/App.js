@@ -2,8 +2,9 @@ import { useState } from "react";
 import "./scss/index.scss";
 
 const App = () => {
-  const [message, setMessage] = useState("");
+  const [order, setOrder] = useState("");
   const [id, setId] = useState("");
+  const [status, setStatus] = useState("Submitted");
   const [response, setResponse] = useState("");
 
   const send = async () => {
@@ -14,7 +15,7 @@ const App = () => {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ id, message }),
+      body: JSON.stringify({ id, status, order }),
     });
     const content = await rawResponse.json();
     setResponse(content.message);
@@ -38,20 +39,33 @@ const App = () => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="message">Message</label>
+            <label>Status</label>
+            <select
+              className="custom-select"
+              defaultValue={status}
+              onChange={(e) => setStatus(e.target.value)}
+            >
+              <option value="Submitted">Submitted</option>
+              <option value="Confirmed">Confirmed</option>
+              <option value="Ready">Ready</option>
+              <option value="Completed">Completed</option>
+            </select>
+          </div>
+          <div className="form-group">
+            <label htmlFor="order">Order</label>
             <textarea
               className="form-control"
-              id="message"
+              id="order"
               rows="3"
-              onChange={(e) => setMessage(e.target.value)}
-              defaultValue={message}
+              onChange={(e) => setOrder(e.target.value)}
+              defaultValue={order}
             ></textarea>
           </div>
           <button type="button" className="btn btn-primary" onClick={send}>
             Send
           </button>
         </form>
-        <p>Response: {response}</p>
+        <p>Server Response: {response}</p>
       </main>
     </div>
   );
