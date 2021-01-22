@@ -1,0 +1,47 @@
+service: order-status
+
+plugins:
+  - serverless-bundle
+  - serverless-offline
+
+package:
+  individually: true
+
+custom:
+  serverless-offline:
+    httpPort: 8000
+    websocketPort: 9000
+    noPrependStageInUrl: true
+    useChildProcesses: true
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  memorySize: 256
+  timeout: 30
+  profile: ${file(../config.yml):PROFILE}
+  region: ${file(../config.yml):REGION}
+  environment:
+    WS_ENDPOINT: ${file(../config.yml):WS_ENDPOINT}
+
+functions:
+  websocket-connect:
+    handler: src/connect.handler
+    events:
+      - websocket:
+          route: $connect
+  websocket-disconnect:
+    handler: src/disconnect.handler
+    events:
+      - websocket:
+          route: $disconnect
+  websocket-default:
+    handler: src/default.handler
+    events:
+      - websocket:
+          route: $default
+  websocket-message:
+    handler: src/message.handler
+    events:
+      - websocket:
+          route: message
