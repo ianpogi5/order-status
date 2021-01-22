@@ -1,8 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
+import "./scss/index.scss";
 
 const App = () => {
   const [client, setClient] = useState(null);
+  const [status, setStatus] = useState("disconnected");
 
   const onMessage = (message) => {
     console.log(message);
@@ -11,22 +13,51 @@ const App = () => {
   const connect = () => {
     const cl = new W3CWebSocket("ws://localhost:9000");
     cl.onopen = () => {
-      console.log("WebSocket client Connected");
+      setStatus("connected");
     };
     cl.onmessage = (message) => onMessage;
     setClient(cl);
   };
-  useEffect(() => {}, []);
+
+  const disconnect = () => {
+    client.close();
+    setStatus("disconnected");
+  };
 
   return (
-    <div className="App">
+    <div className="App container">
       <header className="App-header">
         <h1>Portal</h1>
       </header>
       <main>
-        <button type="button" onClick={connect}>
-          Connect
-        </button>
+        <div className="row mb-2">
+          <button
+            type="button"
+            className="btn btn-primary mr-1"
+            onClick={connect}
+          >
+            Connect
+          </button>
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={disconnect}
+          >
+            Disconnect
+          </button>
+        </div>
+        <div className="row">
+          <h3 className="h5">
+            Status:{" "}
+            <span
+              className={
+                status === "connected" ? "text-success" : "text-danger"
+              }
+            >
+              {status}
+            </span>
+          </h3>
+        </div>
       </main>
     </div>
   );

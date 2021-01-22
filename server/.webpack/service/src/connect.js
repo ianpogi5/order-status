@@ -104,6 +104,19 @@ __webpack_require__.r(__webpack_exports__);
 
 const handler = async event => {
   console.log("event", event);
+  const {
+    connectionId: connectionID,
+    domainName,
+    stage
+  } = event.requestContext;
+  const data = {
+    ID: connectionID,
+    date: Date.now(),
+    messages: [],
+    domainName,
+    stage
+  };
+  console.log(data);
   return _kdcio_api_gw_resp__WEBPACK_IMPORTED_MODULE_1___default.a.OK({
     body: {
       message: "connected"
