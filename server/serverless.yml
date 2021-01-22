@@ -22,7 +22,11 @@ provider:
   profile: ${file(../config.yml):PROFILE}
   region: ${file(../config.yml):REGION}
   environment:
+    AWS_REGION: ${file(../config.yml):REGION}
     WS_ENDPOINT: ${file(../config.yml):WS_ENDPOINT}
+    DDB_ENDPOINT: ${file(../config.yml):DDB_ENDPOINT}
+    WS_TABLE_NAME: ${file(../config.yml):WS_TABLE_NAME}
+    ORDER_TABLE_NAME: ${file(../config.yml):ORDER_TABLE_NAME}
 
 functions:
   websocket-connect:
