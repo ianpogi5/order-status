@@ -47,6 +47,7 @@ const Dynamo = {
         ":outlet": outlet,
       },
     };
+    console.log(params);
     const data = await documentClient.query(params).promise();
 
     if (!data || !data.Items) {

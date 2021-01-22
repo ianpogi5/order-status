@@ -12,8 +12,9 @@ export const handler = async (event) => {
   // event.Records.forEach(async (rec) => {
   try {
     const { companyId, outletId } = rec.dynamodb.NewImage;
+    // raw dynamodb types
     const connections = await dynamo.getAllConnected(
-      `${companyId}-${outletId}`,
+      `${companyId.S}-${outletId.S}`,
       tableName
     );
     console.log(connections);
