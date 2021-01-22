@@ -49,3 +49,10 @@ functions:
     events:
       - websocket:
           route: message
+  new-order:
+    handler: src/newOrder.handler
+    events:
+      - http:
+          path: /order
+          method: post
+          cors: true
