@@ -1,0 +1,19 @@
+service: kaban-resource
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: ${opt:stage}
+  region: ${file(../config/${self:provider.stage}.yml):REGION}
+  profile: ${file(../config/${self:provider.stage}.yml):PROFILE}
+  environment:
+    TZ: ${file(../config/${self:provider.stage}.yml):TZ, "Asia/Manila"}
+
+custom:
+  currentStage: ${self:provider.stage}
+  userPoolName: kaban-${self:provider.stage}
+  userPoolClientName: kaban-client-${self:provider.stage}
+
+resources:
+  - ${file(./ddb.yml)}
+  - ${file(./cognito.yml)}

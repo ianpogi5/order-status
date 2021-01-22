@@ -17,6 +17,7 @@
   "workspaces": [
     "server",
     "portal",
-    "market"
+    "market",
+    "resources"
   ]
 }
