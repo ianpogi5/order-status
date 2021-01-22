@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "sls offline -s dev"
+    "deploy": "sls deploy -s",
+    "deploy:func": "sls deploy function"
   },
   "author": {
     "name": "Ian Dela Cruz",

@@ -2,6 +2,8 @@ import { useState } from "react";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 import "./scss/index.scss";
 
+const { REACT_APP_WS_ENDPOINT } = process.env;
+
 const App = () => {
   const [client, setClient] = useState(null);
   const [status, setStatus] = useState("disconnected");
@@ -11,7 +13,7 @@ const App = () => {
   };
 
   const connect = () => {
-    const cl = new W3CWebSocket("ws://localhost:9000");
+    const cl = new W3CWebSocket(REACT_APP_WS_ENDPOINT);
     cl.onopen = () => {
       setStatus("connected");
     };

@@ -1,6 +1,8 @@
 import { useState } from "react";
 import "./scss/index.scss";
 
+const { REACT_APP_API_ENDPOINT } = process.env;
+
 const App = () => {
   const [order, setOrder] = useState("");
   const [id, setId] = useState("");
@@ -9,7 +11,7 @@ const App = () => {
 
   const send = async () => {
     setResponse("");
-    const rawResponse = await fetch(process.env.REACT_APP_API_ENDPOINT, {
+    const rawResponse = await fetch(REACT_APP_API_ENDPOINT, {
       method: "POST",
       headers: {
         Accept: "application/json",

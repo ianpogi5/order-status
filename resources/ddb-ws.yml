@@ -1,5 +1,5 @@
 Resources:
-  DynamoDbTable:
+  WSDynamoDbTable:
     Type: AWS::DynamoDB::Table
     Properties:
       TableName: order-status-ws

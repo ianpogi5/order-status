@@ -2,17 +2,9 @@ service: order-status
 
 plugins:
   - serverless-bundle
-  - serverless-offline
 
 package:
   individually: true
-
-custom:
-  serverless-offline:
-    httpPort: 8000
-    websocketPort: 9000
-    noPrependStageInUrl: true
-    useChildProcesses: true
 
 provider:
   name: aws
@@ -22,11 +14,13 @@ provider:
   profile: ${file(../config.yml):PROFILE}
   region: ${file(../config.yml):REGION}
   environment:
-    AWS_REGION: ${file(../config.yml):REGION}
-    WS_ENDPOINT: ${file(../config.yml):WS_ENDPOINT}
-    DDB_ENDPOINT: ${file(../config.yml):DDB_ENDPOINT}
     WS_TABLE_NAME: ${file(../config.yml):WS_TABLE_NAME}
     ORDER_TABLE_NAME: ${file(../config.yml):ORDER_TABLE_NAME}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:*
+      Resource: "*"
 
 functions:
   websocket-connect:
@@ -56,3 +50,7 @@ functions:
           path: /order
           method: post
           cors: true
+  process-order:
+    handler: src/processOrder.handler
+    events:
+      - stream: ${file(../config.yml):ORDER_TABLE_STREAM_ARN}

@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "description": "Resources needed",
   "scripts": {
-    "setup": "sls deploy -v -s",
-    "delete": "sls remove -v -s "
+    "deploy": "sls deploy -s",
+    "delete": "sls remove -s"
   },
   "author": {
     "name": "Ian Dela Cruz",
