@@ -7,13 +7,13 @@
   },
   "AttributeDefinitions": [
     {
-      "AttributeName": "pk",
+      "AttributeName": "ID",
       "AttributeType": "S"
     }
   ],
   "KeySchema": [
     {
-      "AttributeName": "pk",
+      "AttributeName": "ID",
       "KeyType": "HASH"
     }
   ]

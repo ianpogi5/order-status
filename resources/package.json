@@ -8,8 +8,8 @@
     "start": "docker-compose -p order-status up -d",
     "ddb:wait": "until nc -z localhost 9010; do sleep 1; done && echo \"DynamoDB started\" && sleep 2",
     "ddb:init": "yarn ddb:init:ws && yarn ddb:init:orders",
-    "ddb:init:ws": "aws dynamodb create-table --cli-input-json file://ddb-ws.json --endpoint-url http://localhost:9010 --region ap-southeast-1",
-    "ddb:init:orders": "aws dynamodb create-table --cli-input-json file://ddb-orders.json --endpoint-url http://localhost:9010 --region ap-southeast-1",
+    "ddb:init:ws": "aws dynamodb create-table --cli-input-json file://ddb-ws.json --endpoint-url http://localhost:9010 --region ap-southeast-1 --output text",
+    "ddb:init:orders": "aws dynamodb create-table --cli-input-json file://ddb-orders.json --endpoint-url http://localhost:9010 --region ap-southeast-1 --output text",
     "ddb:stop": "docker-compose -p order-status stop",
     "ddb:rm": "docker-compose -p order-status rm",
     "delete": "sls remove -v -s "
