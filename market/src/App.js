@@ -5,6 +5,8 @@ const { REACT_APP_API_ENDPOINT } = process.env;
 
 const App = () => {
   const [order, setOrder] = useState("");
+  const [companyId, setCompanyId] = useState("");
+  const [outletId, setOutletId] = useState("");
   const [id, setId] = useState("");
   const [status, setStatus] = useState("Submitted");
   const [response, setResponse] = useState("");
@@ -17,7 +19,7 @@ const App = () => {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ id, status, order }),
+      body: JSON.stringify({ id, status, order, companyId, outletId }),
     });
     const content = await rawResponse.json();
     setResponse(content.message);
@@ -30,6 +32,26 @@ const App = () => {
       </header>
       <main>
         <form>
+          <div className="form-group">
+            <label htmlFor="companyId">Company ID</label>
+            <input
+              type="text"
+              className="form-control"
+              id="companyId"
+              value={companyId}
+              onChange={(e) => setCompanyId(e.target.value)}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="outletId">Outlet ID</label>
+            <input
+              type="text"
+              className="form-control"
+              id="outletId"
+              value={outletId}
+              onChange={(e) => setOutletId(e.target.value)}
+            />
+          </div>
           <div className="form-group">
             <label htmlFor="ID">Order ID</label>
             <input

@@ -8,7 +8,12 @@ export const handler = async (event) => {
 
   const { connectionId: connectionID } = event.requestContext;
 
-  await dynamo.delete(connectionID, tableName);
+  try {
+    const client = await dynamo.get(connectionID, tableName);
+    await dynamo.delete(client, tableName);
+  } catch (error) {
+    console.log(error);
+  }
 
   return response.OK({
     body: { message: "disconnected" },

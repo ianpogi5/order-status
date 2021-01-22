@@ -13,6 +13,8 @@ export const handler = async (event) => {
     date: Date.now(),
     status: body.status,
     order: body.order,
+    companyId: body.companyId,
+    outletId: body.outletId,
   };
 
   await dynamo.write(data, tableName);

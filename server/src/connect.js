@@ -12,13 +12,17 @@ export const handler = async (event) => {
     stage,
   } = event.requestContext;
 
+  const { companyId, outletId } = event.queryStringParameters;
+
   const data = {
     ID: connectionID,
     date: Date.now(),
-    messages: [],
     domainName,
     stage,
+    outlet: `${companyId}-${outletId}`,
   };
+
+  console.log(data);
 
   await dynamo.write(data, tableName);
 

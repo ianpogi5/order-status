@@ -6,11 +6,17 @@ const tableName = process.env.WS_TABLE_NAME;
 export const handler = async (event) => {
   const data = JSON.stringify(event.Records);
   console.log("[new dynamodb event received] :=> ", data);
+  const proms = [];
+  const rec = event.Records[0];
 
+  // event.Records.forEach(async (rec) => {
   try {
-    const connections = await dynamo.getAllConnected(tableName);
+    const { companyId, outletId } = rec.dynamodb.NewImage;
+    const connections = await dynamo.getAllConnected(
+      `${companyId}-${outletId}`,
+      tableName
+    );
     console.log(connections);
-    const proms = [];
     connections.forEach((record) => {
       const { ID, domainName, stage } = record;
       proms.push(
@@ -18,12 +24,13 @@ export const handler = async (event) => {
           domainName,
           stage,
           connectionID: ID,
-          message: data,
+          message: JSON.stringify(rec),
         })
       );
     });
-    await Promise.all(proms);
   } catch (error) {
     console.log(error);
   }
+  // });
+  await Promise.all(proms);
 };

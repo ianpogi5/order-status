@@ -9,6 +9,17 @@ Resources:
       AttributeDefinitions:
         - AttributeName: ID
           AttributeType: S
+        - AttributeName: outlet
+          AttributeType: S
       KeySchema:
         - AttributeName: ID
           KeyType: HASH
+        - AttributeName: outlet
+          KeyType: RANGE
+      GlobalSecondaryIndexes:
+        - IndexName: "GSI"
+          KeySchema:
+            - AttributeName: "outlet"
+              KeyType: "HASH"
+          Projection:
+            ProjectionType: "ALL"

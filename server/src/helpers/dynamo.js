@@ -14,32 +14,44 @@ const Dynamo = {
   async get(ID, TableName) {
     const params = {
       TableName,
-      Key: {
-        ID,
+      KeyConditionExpression: "#ID = :ID",
+      ExpressionAttributeNames: {
+        "#ID": "ID",
+      },
+      ExpressionAttributeValues: {
+        ":ID": ID,
       },
     };
 
-    const data = await documentClient.get(params).promise();
+    const data = await documentClient.query(params).promise();
 
-    if (!data || !data.Item) {
+    if (!data || !data.Items) {
       throw Error(
         `There was an error fetching the data for ID of ${ID} from ${TableName}`
       );
     }
     console.log(data);
 
-    return data.Item;
+    return data.Items[0];
   },
 
-  async getAllConnected(TableName) {
+  async getAllConnected(outlet, TableName) {
     const params = {
       TableName,
+      IndexName: "GSI",
+      KeyConditionExpression: "#outlet = :outlet",
+      ExpressionAttributeNames: {
+        "#outlet": "outlet",
+      },
+      ExpressionAttributeValues: {
+        ":outlet": outlet,
+      },
     };
-    const data = await documentClient.scan(params).promise();
+    const data = await documentClient.query(params).promise();
 
     if (!data || !data.Items) {
       throw Error(
-        `There was an error fetching the data for connected clients from ${TableName}`
+        `There was an error fetching the data for connected clients to ${outlet} from ${TableName}`
       );
     }
     console.log(data);
@@ -68,11 +80,12 @@ const Dynamo = {
     return data;
   },
 
-  async delete(ID, TableName) {
+  async delete({ ID, outlet }, TableName) {
     const params = {
       TableName,
       Key: {
         ID,
+        outlet,
       },
     };
 

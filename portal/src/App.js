@@ -8,9 +8,13 @@ const App = () => {
   const [client, setClient] = useState(null);
   const [status, setStatus] = useState("disconnected");
   const [messages, setMessages] = useState("");
+  const [companyId, setCompanyId] = useState("");
+  const [outletId, setOutletId] = useState("");
 
   const connect = () => {
-    const cl = new W3CWebSocket(REACT_APP_WS_ENDPOINT);
+    const cl = new W3CWebSocket(
+      `${REACT_APP_WS_ENDPOINT}?companyId=${companyId}&outletId=${outletId}`
+    );
 
     cl.onopen = () => {
       setStatus("connected");
@@ -36,20 +40,42 @@ const App = () => {
       </header>
       <main>
         <div className="row mb-2">
-          <button
-            type="button"
-            className="btn btn-primary mr-1"
-            onClick={connect}
-          >
-            Connect
-          </button>
-          <button
-            type="button"
-            className="btn btn-primary"
-            onClick={disconnect}
-          >
-            Disconnect
-          </button>
+          <form>
+            <div className="form-group">
+              <label htmlFor="companyId">Company ID</label>
+              <input
+                type="text"
+                className="form-control"
+                id="companyId"
+                value={companyId}
+                onChange={(e) => setCompanyId(e.target.value)}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="outletId">Outlet ID</label>
+              <input
+                type="text"
+                className="form-control"
+                id="outletId"
+                value={outletId}
+                onChange={(e) => setOutletId(e.target.value)}
+              />
+            </div>
+            <button
+              type="button"
+              className="btn btn-primary mr-1"
+              onClick={connect}
+            >
+              Connect
+            </button>
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={disconnect}
+            >
+              Disconnect
+            </button>
+          </form>
         </div>
         <div className="row mb-4">
           <h3 className="h5">
