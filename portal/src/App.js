@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { w3cwebsocket as W3CWebSocket } from "websocket";
+import WS from "./ws";
 import "./scss/index.scss";
 
 const { REACT_APP_WS_ENDPOINT } = process.env;
@@ -7,30 +7,38 @@ const { REACT_APP_WS_ENDPOINT } = process.env;
 const App = () => {
   const [client, setClient] = useState(null);
   const [status, setStatus] = useState("disconnected");
-  const [messages, setMessages] = useState("");
+  const [orders, setOrders] = useState("");
   const [companyId, setCompanyId] = useState("");
   const [outletId, setOutletId] = useState("");
 
+  const onConnected = () => {
+    setStatus("connected");
+  };
+
+  const onOrderChange = (order) => {
+    console.log(order);
+    setOrders((m) => `${m}<p>${order.data}</p>`);
+  };
+
+  const onDisconnect = () => {
+    setStatus("disconnected");
+  };
+
   const connect = () => {
-    const cl = new W3CWebSocket(
-      `${REACT_APP_WS_ENDPOINT}?companyId=${companyId}&outletId=${outletId}`
-    );
-
-    cl.onopen = () => {
-      setStatus("connected");
-    };
-
-    cl.onmessage = (message) => {
-      console.log(message);
-      setMessages((m) => `${m}<p>${message.data}</p>`);
-    };
+    const cl = new WS({
+      companyId,
+      outletId,
+      wsEndpoint: REACT_APP_WS_ENDPOINT,
+      onConnected,
+      onOrderChange,
+      onDisconnect,
+    });
 
     setClient(cl);
   };
 
   const disconnect = () => {
-    client.close();
-    setStatus("disconnected");
+    client.disconnect();
   };
 
   return (
@@ -89,10 +97,7 @@ const App = () => {
             </span>
           </h3>
         </div>
-        <div
-          className="row"
-          dangerouslySetInnerHTML={{ __html: messages }}
-        ></div>
+        <div className="row" dangerouslySetInnerHTML={{ __html: orders }}></div>
       </main>
     </div>
   );
