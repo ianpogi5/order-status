@@ -9,8 +9,7 @@ export const handler = async (event) => {
   const { connectionId: connectionID } = event.requestContext;
 
   try {
-    const client = await dynamo.get(connectionID, tableName);
-    await dynamo.delete(client, tableName);
+    await dynamo.delete(connectionID, tableName);
   } catch (error) {
     console.log(error);
   }

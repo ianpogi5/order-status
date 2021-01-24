@@ -14,8 +14,6 @@ Resources:
       KeySchema:
         - AttributeName: ID
           KeyType: HASH
-        - AttributeName: outlet
-          KeyType: RANGE
       GlobalSecondaryIndexes:
         - IndexName: "GSI"
           KeySchema:

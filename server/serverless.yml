@@ -42,11 +42,6 @@ functions:
     events:
       - websocket:
           route: $default
-  websocket-message:
-    handler: src/message.handler
-    events:
-      - websocket:
-          route: message
   new-order:
     handler: src/newOrder.handler
     events:

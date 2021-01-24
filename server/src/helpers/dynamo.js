@@ -14,25 +14,21 @@ const Dynamo = {
   async get(ID, TableName) {
     const params = {
       TableName,
-      KeyConditionExpression: "#ID = :ID",
-      ExpressionAttributeNames: {
-        "#ID": "ID",
-      },
-      ExpressionAttributeValues: {
-        ":ID": ID,
+      Key: {
+        ID,
       },
     };
 
-    const data = await documentClient.query(params).promise();
+    const data = await documentClient.get(params).promise();
 
-    if (!data || !data.Items) {
+    if (!data || !data.Item) {
       throw Error(
         `There was an error fetching the data for ID of ${ID} from ${TableName}`
       );
     }
     console.log(data);
 
-    return data.Items[0];
+    return data.Item;
   },
 
   async getAllConnected(outlet, TableName) {
@@ -81,12 +77,11 @@ const Dynamo = {
     return data;
   },
 
-  async delete({ ID, outlet }, TableName) {
+  async delete(ID, TableName) {
     const params = {
       TableName,
       Key: {
         ID,
-        outlet,
       },
     };
 
