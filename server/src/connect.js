@@ -14,6 +14,10 @@ export const handler = async (event) => {
 
   const { companyId, outletId } = event.queryStringParameters;
 
+  if (!companyId || !outletId) {
+    throw new Error("Missing companyId and/or outletId");
+  }
+
   const data = {
     ID: connectionID,
     date: Date.now(),
