@@ -8,6 +8,7 @@ class WS {
     onConnected,
     onOrderChange,
     onDisconnect,
+    onError,
   }) {
     this.client = new W3CWebSocket(
       `${wsEndpoint}?companyId=${companyId}&outletId=${outletId}`
@@ -16,6 +17,7 @@ class WS {
     if (onConnected) this.client.onopen = onConnected;
     if (onOrderChange) this.client.onmessage = onOrderChange;
     if (onDisconnect) this.client.onclose = onDisconnect;
+    if (onError) this.client.onerror = onError;
   }
 
   disconnect = () => this.client.close();
