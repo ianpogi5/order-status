@@ -77,3 +77,10 @@ There are 3 parts of this project. `Market` where orders come in, `Server` where
 
 4. Open mutiple tabs/browsers and go to `http://localhost:9001/`/. Get them all connected with different/same company and outlet id.
 5. Send different data from Market to experiement with the project.
+
+## Delete AWS Resources
+
+```bash
+yarn workspace server delete dev
+yarn workspace resources delete dev
+```
