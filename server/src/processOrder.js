@@ -7,31 +7,45 @@ export const handler = async (event) => {
   const data = JSON.stringify(event.Records);
   console.log("[new dynamodb event received] :=> ", data);
   const proms = [];
-  const rec = event.Records[0];
 
-  // event.Records.forEach(async (rec) => {
   try {
-    const { companyId, outletId } = rec.dynamodb.NewImage;
-    // raw dynamodb types
-    const connections = await dynamo.getAllConnected(
-      `${companyId.S}-${outletId.S}`,
+    const rec = event.Records[0];
+    const newData = dynamo.convert(rec.dynamodb.NewImage);
+    const oldData = dynamo.convert(rec.dynamodb.OldImage);
+    const { companyId, outletId } = newData;
+
+    console.log(newData, oldData);
+
+    if (newData.status === oldData.status) {
+      // Status did not change
+      return;
+    }
+
+    const clients = await dynamo.getAllConnected(
+      `${companyId}-${outletId}`,
       tableName
     );
-    console.log(connections);
-    connections.forEach((record) => {
-      const { ID, domainName, stage } = record;
+
+    console.log(clients);
+
+    // Send message to each clients matching companyId & outletId
+    clients.forEach((client) => {
+      const { ID, domainName, stage } = client;
       proms.push(
         send({
           domainName,
           stage,
           connectionID: ID,
-          message: JSON.stringify(rec),
+          message: JSON.stringify({
+            orderId: newData.ID,
+            status: newData.status,
+          }),
         })
       );
     });
   } catch (error) {
     console.log(error);
   }
-  // });
+
   await Promise.all(proms);
 };

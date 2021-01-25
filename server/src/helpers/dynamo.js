@@ -87,6 +87,10 @@ const Dynamo = {
 
     return documentClient.delete(params).promise();
   },
+
+  convert(data) {
+    return DynamoDB.Converter.unmarshall(data);
+  },
 };
 
 export default Dynamo;
