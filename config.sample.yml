@@ -1,0 +1,5 @@
+REGION: ap-southeast-1
+PROFILE: dev
+WS_TABLE_NAME: order-status-ws
+ORDER_TABLE_NAME: order-status-orders
+ORDER_TABLE_STREAM_ARN: arn:aws:dynamodb:ap-southeast-1:xxxxxxxxxxxx:table/order-status-orders/stream/2021-01-01T00:00:00.000
