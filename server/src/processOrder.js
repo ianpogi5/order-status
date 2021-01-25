@@ -26,7 +26,11 @@ export const handler = async (event) => {
       tableName
     );
 
-    console.log(clients);
+    const message = {
+      type: oldData.status === undefined ? "new-order" : "order-status",
+      orderId: newData.ID,
+      status: newData.status,
+    };
 
     // Send message to each clients matching companyId & outletId
     clients.forEach((client) => {
@@ -36,10 +40,7 @@ export const handler = async (event) => {
           domainName,
           stage,
           connectionID: ID,
-          message: JSON.stringify({
-            orderId: newData.ID,
-            status: newData.status,
-          }),
+          message: JSON.stringify(message),
         })
       );
     });
