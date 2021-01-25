@@ -97,7 +97,7 @@ const App = () => {
             </span>
           </h3>
         </div>
-        <div className="row" dangerouslySetInnerHTML={{ __html: orders }}></div>
+        <div dangerouslySetInnerHTML={{ __html: orders }}></div>
       </main>
     </div>
   );
